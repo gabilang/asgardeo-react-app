@@ -1,0 +1,8 @@
+{
+    "clientID": "KQ_KHHv4OAoNGuraN9Cyb4f0axUa",
+    "baseUrl": "https://api.asgardeo.io/t/testorgdevant",
+    "signInRedirectURL": "https://localhost:3000",
+    "signOutRedirectURL": "https://localhost:3000",
+    "scope": ["profile","openid"]
+}
+
