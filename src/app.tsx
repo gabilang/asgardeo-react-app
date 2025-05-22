@@ -17,7 +17,7 @@
  */
 
 import { AuthProvider, useAuthContext } from "@asgardeo/auth-react";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./app.css";
@@ -36,7 +36,7 @@ const AppContent: FunctionComponent = (): ReactElement => {
             <Router>
             <Routes>
                 <Route path="/" element={ <HomePage /> } />
-                {/* <Route path="/login" element={ <HomePage /> } /> */}
+                <Route path="/login" element={ <HomePage /> } />
                 {/* <Route path="/list-orgs" element={<ListOrgs />} /> */}
                 <Route element={ <NotFoundPage /> } />
             </Routes>
@@ -45,10 +45,29 @@ const AppContent: FunctionComponent = (): ReactElement => {
     )
 };
 
-const App = () => (
-    <AuthProvider config={authConfig}>
+// const App = () => (
+//     <AuthProvider config={authConfig}>
+//         <AppContent />
+//     </AuthProvider>
+// );
+
+const App: FunctionComponent = (): ReactElement => {
+    const [authConfig, setAuthConfig] = useState(null);
+    useEffect(() => {
+        fetch("/public/config.json")
+            .then((response) => response.json())
+            .then((config) => {
+                setAuthConfig(config);
+            });
+    }, []);
+
+    if (!authConfig) {
+        return <div>Loading......</div>;
+    }
+    return (<AuthProvider config={authConfig}>
         <AppContent />
     </AuthProvider>
-);
+)
+};
 
 render((<App />), document.getElementById("root"));
